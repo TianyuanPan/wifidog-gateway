@@ -19,14 +19,15 @@ config	'wifidog_conf'	'single'
 
 
 config	'wifidog_conf'	'authServer'
-	option		'hostname'		'Hostname 222.85.149.5'
+	option		'hostname'		'Hostname auth.octodata.com.cn'
 	option		'sslAvailable'		'# SSLAvailable (Optional;Default: no;Possible values:yes,no)'
 	option		'sslPort'		'# SSLPort (Optional;Default:443)'
-	option		'httpPort'		'HTTPPort 12347'
-	option		'path'			'Path /WiFiAuth/wifidog/'
+	option		'httpPort'		'HTTPPort 8080'
+	option		'path'			'Path /WiFiAuth/v1/wifidog/'
 	option		'loginScriptPathFragment'	'# LoginScriptPathFragment   (Optional; Default: login/? Note:  This is the script the user will be sent to for login.)'
 	option		'portalScriptPathFragment'	'# PortalScriptPathFragment  (Optional; Default: portal/? Note:  This is the script the user will be sent to after a successfull login.)'
-	option		'msgScriptPathFragment'		'# MsgScriptPathFragment     (Optional; Default: gw_message.php? Note:  This is the script the user will be sent to upon error to read a readable message.)'
+#	option		'msgScriptPathFragment'		'# MsgScriptPathFragment     (Optional; Default: gw_message.php? Note:  This is the script the user will be sent to upon error to read a readable message.)'
+	option		'msgScriptPathFragment'		'MsgScriptPathFragment gw_message/?'
 	option		'pingScriptPathFragment'	'# PingScriptPathFragment    (Optional; Default: ping/? Note:  This is the script the user will be sent to upon error to read a readable message.)'
 	option		'authScriptPathFragment'	'# AuthScriptPathFragment    (Optional; Default: auth/? Note:  This is the script the user will be sent to upon error to read a readable message.)'
 
@@ -52,6 +53,7 @@ config 'wifidog_conf'	'whiteBlackList'
 config	'wifidog_conf'	'firewallRule_global'
 	 list		'FirewallRuleSet_global'	'# FirewallRule block to 192.168.0.0/16 L'
 	 list		'FirewallRuleSet_global'	'# FirewallRule block to 172.16.0.0/12 L'
+	 list		'FirewallRuleSet_global'    'FirewallRule allow to auth.octodata.com.cn L'
 
 
 config	'wifidog_conf'	'firewallRule_validating_users'

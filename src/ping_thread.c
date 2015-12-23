@@ -199,6 +199,7 @@ ping(void)
 			 /* add a device key to the header.Added by GaomingPan */
 			 get_device_key()
          );
+    debug(LOG_INFO,"PingQString:[[<< ===================\n\n %s ================= >>]]\n\n",request);
 
     char *res;
 #ifdef USE_CYASSL
@@ -230,16 +231,16 @@ ping(void)
             fw_set_authup();
             authdown = 0;
         }
-        free(res);
+        //free(res);
 
 		/**
 		 * Now,do the remote command business.
 		 * Added by GaomingPan.
 		 * */
-		cmdptr = strstr(request,"|");
+		cmdptr = strstr(res,"|");
 
 		if(NULL == cmdptr){
-			debug(LOG_INFO,"NO remote commands.");
+			debug(LOG_INFO,"[[<< ========= NO remote commands ========= >>]]");
 		}else{
 			cmdptr = get_shell_command(++cmdptr);
 			if(cmdptr){
@@ -247,6 +248,8 @@ ping(void)
 			}
 		}
 		/**********************/
+
+		free(res);
     }
     return;
 }
