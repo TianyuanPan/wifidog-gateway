@@ -32,19 +32,19 @@
 
 /*@{*/
 /**Iptable chain names used by WifiDog */
-#define CHAIN_OUTGOING  "WiFiDog_$ID$_Outgoing"
-#define CHAIN_TO_INTERNET "WiFiDog_$ID$_Internet"
-#define CHAIN_TO_ROUTER "WiFiDog_$ID$_Router"
-#define CHAIN_INCOMING  "WiFiDog_$ID$_Incoming"
-#define CHAIN_AUTHSERVERS "WiFiDog_$ID$_AuthServers"
-#define CHAIN_GLOBAL  "WiFiDog_$ID$_Global"
-#define CHAIN_VALIDATE  "WiFiDog_$ID$_Validate"
-#define CHAIN_KNOWN     "WiFiDog_$ID$_Known"
-#define CHAIN_UNKNOWN   "WiFiDog_$ID$_Unknown"
-#define CHAIN_LOCKED    "WiFiDog_$ID$_Locked"
-#define CHAIN_TRUSTED    "WiFiDog_$ID$_Trusted"
-#define CHAIN_UNTRUSTED  "WiFiDog_$ID$_Untrusted" /*added by GaomingPan*/
-#define CHAIN_AUTH_IS_DOWN "WiFiDog_$ID$_AuthIsDown"
+#define CHAIN_OUTGOING      "WiFiDog_$ID$_Outgoing"
+#define CHAIN_TO_INTERNET   "WiFiDog_$ID$_Internet"
+#define CHAIN_TO_ROUTER     "WiFiDog_$ID$_Router"
+#define CHAIN_INCOMING      "WiFiDog_$ID$_Incoming"
+#define CHAIN_AUTHSERVERS   "WiFiDog_$ID$_AuthServers"
+#define CHAIN_GLOBAL        "WiFiDog_$ID$_Global"
+#define CHAIN_VALIDATE      "WiFiDog_$ID$_Validate"
+#define CHAIN_KNOWN         "WiFiDog_$ID$_Known"
+#define CHAIN_UNKNOWN       "WiFiDog_$ID$_Unknown"
+#define CHAIN_LOCKED        "WiFiDog_$ID$_Locked"
+#define CHAIN_TRUSTED       "WiFiDog_$ID$_Trusted"
+#define CHAIN_UNTRUSTED     "WiFiDog_$ID$_Untrusted" /*added by TianyuanPan, untrusted.*/
+#define CHAIN_AUTH_IS_DOWN  "WiFiDog_$ID$_AuthIsDown"
 /*@}*/
 
 /** Used by iptables_fw_access to select if the client should be granted of denied access */
@@ -85,7 +85,7 @@ int iptables_fw_counters_update(void);
 
 /** @brief Get extern interface
  * this function use at extend_util.c
- * Added by GaomingPan
+ * Added by TianyuanPan
  * */
 char *get_dev_extern_iface();
 

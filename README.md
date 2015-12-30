@@ -1,3 +1,6 @@
+# description #
+this src was fork from https://github.com/wifidog/wifidog-gateway.git
+
 # WifiDog #
 
 [![Build Status](https://travis-ci.org/wifidog/wifidog-gateway.svg?branch=master)](https://travis-ci.org/wifidog/wifidog-gateway)

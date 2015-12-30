@@ -61,7 +61,7 @@ static int fw_quiet = 0;
 
 /** @brief Get extern interface
  * this function use at extend_util.c.
- * Added by GaomingPan.
+ * Added by TianyuanPan.
  * */
 static  char dev_extern_iface[64] = {0};
 char *get_dev_extern_iface()

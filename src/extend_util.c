@@ -117,25 +117,14 @@ t_devinfo *get_devinfo(void)
 
 	memcpy(devinfo.gw_mac,apmac,DEV_MAC_ADDR_LEN);
 
-//	if(get_apmac(devinfo.gw_mac))
-//	{
-//		debug(LOG_WARNING,"MyDEBUG:get get_apmac error!");
-//	}
-
 	if(get_devssid(devinfo.gw_ssid))
-	{
 		debug(LOG_WARNING,"ERR:get ssid error!");
-	}
 
 	if(get_dogversion(devinfo.dog_version))
-	{
 		debug(LOG_WARNING,"ERR: get_dogversion error!");
-	}
 
 	if(get_wanip(devinfo.wan_ip))
-	{
 		debug(LOG_WARNING,"ERR: get_wanip error!\n");
-	}
 
 	devinfo.cur_conn = get_curconn();
 	devinfo.dev_conn = get_devconn();
@@ -143,14 +132,10 @@ t_devinfo *get_devinfo(void)
 	devinfo.cpu_use = get_cpuuse(CPU_LOAD);
 
 	if(get_wanbps(&devinfo.go_speed,&devinfo.come_speed))
-	{
 		debug(LOG_WARNING,"ERR: get_speed error!");
-	}
 
 	if(get_trafficCount(get_dev_extern_iface(),&devinfo.incoming,&devinfo.outgoing,NULL,NULL))
-	{
 		debug(LOG_WARNING,"ERR: get_traffic error!\n");
-	}
 
 	return &devinfo;
 }
