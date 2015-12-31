@@ -41,6 +41,8 @@
 
 #include "common.h"
 
+#include "util_excute_cmd.h"
+
 #include "safe.h"
 #include "conf.h"
 #include "fw_iptables.h"
@@ -539,7 +541,8 @@ iptables_fw_destroy(void)
 int
 iptables_fw_destroy_mention(const char *table, const char *chain, const char *mention)
 {
-    FILE *p = NULL;
+    //FILE *p = NULL;
+	FILE_T *pft = NULL;
     char *command = NULL;
     char *command2 = NULL;
     char line[MAX_BUF];
@@ -554,12 +557,16 @@ iptables_fw_destroy_mention(const char *table, const char *chain, const char *me
     safe_asprintf(&command, "iptables -t %s -L %s -n --line-numbers -v", table, chain);
     iptables_insert_gateway_id(&command);
 
-    if ((p = popen(command, "r"))) {
+    //if ((p = popen(command, "r"))) {
+    if ((pft = excute_open(command, "r"))) {
         /* Skip first 2 lines */
-        while (!feof(p) && fgetc(p) != '\n') ;
-        while (!feof(p) && fgetc(p) != '\n') ;
+        //while (!feof(p) && fgetc(p) != '\n') ;
+    	while (!feof(pft->fp) && fgetc(pft->fp) != '\n') ;
+        //while (!feof(p) && fgetc(p) != '\n') ;
+    	while (!feof(pft->fp) && fgetc(pft->fp) != '\n') ;
         /* Loop over entries */
-        while (fgets(line, sizeof(line), p)) {
+        //while (fgets(line, sizeof(line), p)) {
+    	while (fgets(line, sizeof(line), pft->fp)) {
             /* Look for victim */
             if (strstr(line, victim)) {
                 /* Found victim - Get the rule number into rulenum */
@@ -576,7 +583,8 @@ iptables_fw_destroy_mention(const char *table, const char *chain, const char *me
                 }
             }
         }
-        pclose(p);
+        //pclose(p);
+    	excute_close(pft);
     }
 
     free(command);
@@ -668,7 +676,8 @@ iptables_fw_auth_reachable(void)
 int
 iptables_fw_counters_update(void)
 {
-    FILE *output;
+    //FILE *output;
+	FILE_T *output;
     char *script, ip[16], rc;
     unsigned long long int counter;
     t_client *p1;
@@ -677,18 +686,24 @@ iptables_fw_counters_update(void)
     /* Look for outgoing traffic */
     safe_asprintf(&script, "%s %s", "iptables", "-v -n -x -t mangle -L " CHAIN_OUTGOING);
     iptables_insert_gateway_id(&script);
-    output = popen(script, "r");
+    //output = popen(script, "r");
+    output = excute_open(script, "r");
     free(script);
     if (!output) {
-        debug(LOG_ERR, "popen(): %s", strerror(errno));
+        //debug(LOG_ERR, "popen(): %s", strerror(errno));
+    	debug(LOG_ERR, "excute_open(): %s", strerror(errno));
         return -1;
     }
 
     /* skip the first two lines */
-    while (('\n' != fgetc(output)) && !feof(output)) ;
-    while (('\n' != fgetc(output)) && !feof(output)) ;
-    while (output && !(feof(output))) {
-        rc = fscanf(output, "%*s %llu %*s %*s %*s %*s %*s %15[0-9.] %*s %*s %*s %*s %*s %*s", &counter, ip);
+    //while (('\n' != fgetc(output)) && !feof(output)) ;
+    while (('\n' != fgetc(output->fp)) && !feof(output->fp)) ;
+    //while (('\n' != fgetc(output)) && !feof(output)) ;
+    while (('\n' != fgetc(output->fp)) && !feof(output->fp)) ;
+    //while (output && !(feof(output))) {
+    while (output->fp && !(feof(output->fp))) {
+        //rc = fscanf(output, "%*s %llu %*s %*s %*s %*s %*s %15[0-9.] %*s %*s %*s %*s %*s %*s", &counter, ip);
+    	rc = fscanf(output->fp, "%*s %llu %*s %*s %*s %*s %*s %15[0-9.] %*s %*s %*s %*s %*s %*s", &counter, ip);
         //rc = fscanf(output, "%*s %llu %*s %*s %*s %*s %*s %15[0-9.] %*s %*s %*s %*s %*s 0x%*u", &counter, ip);
         if (2 == rc && EOF != rc) {
             /* Sanity */
@@ -718,23 +733,30 @@ iptables_fw_counters_update(void)
             UNLOCK_CLIENT_LIST();
         }
     }
-    pclose(output);
+    //pclose(output);
+    excute_close(output);
 
     /* Look for incoming traffic */
     safe_asprintf(&script, "%s %s", "iptables", "-v -n -x -t mangle -L " CHAIN_INCOMING);
     iptables_insert_gateway_id(&script);
-    output = popen(script, "r");
+    //output = popen(script, "r");
+    output = excute_open(script, "r");
     free(script);
     if (!output) {
-        debug(LOG_ERR, "popen(): %s", strerror(errno));
+        //debug(LOG_ERR, "popen(): %s", strerror(errno));
+    	debug(LOG_ERR, "excute_open(): %s", strerror(errno));
         return -1;
     }
 
     /* skip the first two lines */
-    while (('\n' != fgetc(output)) && !feof(output)) ;
-    while (('\n' != fgetc(output)) && !feof(output)) ;
-    while (output && !(feof(output))) {
-        rc = fscanf(output, "%*s %llu %*s %*s %*s %*s %*s %*s %15[0-9.]", &counter, ip);
+    //while (('\n' != fgetc(output)) && !feof(output)) ;
+    while (('\n' != fgetc(output->fp)) && !feof(output->fp)) ;
+   // while (('\n' != fgetc(output)) && !feof(output)) ;
+    while (('\n' != fgetc(output->fp)) && !feof(output->fp)) ;
+    //while (output && !(feof(output))) {
+    while (output->fp && !(feof(output->fp))) {
+        //rc = fscanf(output, "%*s %llu %*s %*s %*s %*s %*s %*s %15[0-9.]", &counter, ip);
+    	rc = fscanf(output->fp, "%*s %llu %*s %*s %*s %*s %*s %*s %15[0-9.]", &counter, ip);
         if (2 == rc && EOF != rc) {
             /* Sanity */
             if (!inet_aton(ip, &tempaddr)) {
@@ -761,7 +783,10 @@ iptables_fw_counters_update(void)
             UNLOCK_CLIENT_LIST();
         }
     }
-    pclose(output);
+   // pclose(output);
+    excute_close(output);
 
     return 1;
 }
+
+

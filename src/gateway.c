@@ -54,6 +54,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "extend_util.h"
+#include "util_excute_cmd.h"
 #include "firewall.h"
 #include "http.h"
 #include "httpd_thread.h"
@@ -425,20 +426,21 @@ main_loop(void)
 	/**
 	 * initialize some parameters,command result send url,
 	 * device key and mac address.
-	 * Added by GaomingPan.
+	 * Added by TianyuanPan.
 	 * */
-	if(0 != init_post_http_url_config() ){
+	if (0 != init_post_http_url_config() )
 		debug(LOG_WARNING, "Warning: Failed to initialize init_post_http_url_config");
-		//exit(1);
-	}
+
 	/*init device key*/
-	if(0 != init_device_key()){
+	if (0 != init_device_key())
 		debug(LOG_WARNING,"Warning:Failed to initalize device key.");
-	}
+
 	/*get ap mac*/
-	if(0 != get_apmac(NULL)){
+	if (0 != get_apmac(NULL))
 		debug(LOG_WARNING,"Warning:Failed to get ap MAC.");
-	}
+
+	if (0 != init_excute_outdir())
+		debug(LOG_WARNING,"Warning:Failed to initalize excute out directory.");
 	/*********************************/
 
     /* Start clean up thread */

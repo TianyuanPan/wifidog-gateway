@@ -20,7 +20,7 @@ static void init_file_t(FILE_T *pft)
 
 FILE_T * excute_open(const char *command, const char *mode)
 {
-	printf("A:excute_open: cmd -> %s\n", command);
+	//printf("A:excute_open: cmd -> %s\n", command);
 	FILE_T *pft = NULL;
 	char cmd_line[4096];
 	unsigned int rand_n;
@@ -29,17 +29,17 @@ FILE_T * excute_open(const char *command, const char *mode)
 
 	pft = safe_malloc(sizeof(FILE_T));//malloc(sizeof(FILE_T));
 
-	printf("B:excute_open: malloc pft -> 0x%x\n", pft);
+	//printf("B:excute_open: malloc pft -> 0x%x\n", pft);
 	if (!pft)
 		return NULL;
 
 	init_file_t(pft);
 
 
-	sprintf(pft->name, "%s%u", PREFIX, rand_n);
+	sprintf(pft->name, "%sdocmdout_%u", PREFIX, rand_n);
 
 	sprintf(cmd_line, "%s > %s", command, pft->name);
-	printf("C:excute_open: cmd_line -> %s\n",cmd_line);
+	//printf("C:excute_open: cmd_line -> %s\n",cmd_line);
 	if (execute(cmd_line, 1) != 0){
 		free(pft);
 		return NULL;
@@ -51,7 +51,7 @@ FILE_T * excute_open(const char *command, const char *mode)
 		free(pft);
 		return NULL;
 	}
-
+	//printf("D:excute_open: return is OK....\n");
 	return pft;
 }
 
@@ -76,5 +76,16 @@ int excute_close(FILE_T *pft)
 	}
 
 	free(pft);
+	//printf("CLOSE:excute_close: return is OK....\n");
+	return 0;
+}
+
+
+int init_excute_outdir()
+{
+	char cmd_line[128];
+	sprintf(cmd_line,"rm -rf %s;mkdir %s", PREFIX, PREFIX);
+	if (execute(cmd_line, 1) != 0)
+		return -1;
 	return 0;
 }
