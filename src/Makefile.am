@@ -35,7 +35,8 @@ libgateway_a_SOURCES = commandline.c \
 	simple_http.c \
 	pstring.c \
 	wd_util.c \
-	extend_util.c
+	extend_util.c \
+	util_excute_cmd.c
 
 noinst_HEADERS = commandline.h \
 	common.h \
@@ -57,7 +58,8 @@ noinst_HEADERS = commandline.h \
 	simple_http.h \
 	pstring.h \
 	wd_util.h \
-	extend_util.h
+	extend_util.h \
+	util_excute_cmd.h
 
 wdctl_LDADD = libgateway.a
 

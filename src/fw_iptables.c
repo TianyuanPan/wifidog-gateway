@@ -261,7 +261,7 @@ iptables_fw_init(void)
     char *ext_interface = NULL;
     int gw_port = 0;
     t_trusted_mac *p;
-    t_untrusted_mac *unp;/*added by GaomingPan*/
+    t_untrusted_mac *unp;/*added by TianyuanPan*/
     int proxy_port;
     fw_quiet = 0;
     int got_authdown_ruleset = NULL == get_ruleset(FWRULESET_AUTH_IS_DOWN) ? 0 : 1;
@@ -271,14 +271,14 @@ iptables_fw_init(void)
     gw_port = config->gw_port;
     if (config->external_interface) {
         ext_interface = safe_strdup(config->external_interface);
-        /* Added by GaomingPan */
+        /* Added by TianyuanPan */
 		//memset(dev_extern_iface,0,64);
 		sprintf(dev_extern_iface,"%s",ext_interface);
 		debug(LOG_INFO, "dev_extern_iface is: %s",dev_extern_iface);
 		/**/
     } else {
         ext_interface = get_ext_iface();
-        /* Added by GaomingPan */
+        /* Added by TianyuanPan */
 		//memset(dev_extern_iface,0,64);
 		sprintf(dev_extern_iface,"%s",ext_interface);
 		debug(LOG_INFO, "dev_extern_iface is: %s",dev_extern_iface);
@@ -298,7 +298,7 @@ iptables_fw_init(void)
 
     /* Create new chains */
     iptables_do_command("-t mangle -N " CHAIN_TRUSTED);
-    iptables_do_command("-t mangle -N " CHAIN_UNTRUSTED);/* Added by GaomingPan */
+    iptables_do_command("-t mangle -N " CHAIN_UNTRUSTED);/* Added by TianyuanPan */
     iptables_do_command("-t mangle -N " CHAIN_OUTGOING);
     iptables_do_command("-t mangle -N " CHAIN_INCOMING);
     if (got_authdown_ruleset)
@@ -306,7 +306,7 @@ iptables_fw_init(void)
 
     /* Assign links and rules to these new chains */
     iptables_do_command("-t mangle -I PREROUTING 1 -i %s -j " CHAIN_OUTGOING, config->gw_interface);
-    iptables_do_command("-t mangle -I PREROUTING 1 -i %s -j " CHAIN_UNTRUSTED, config->gw_interface); /* Added by GaomingPan */
+    iptables_do_command("-t mangle -I PREROUTING 1 -i %s -j " CHAIN_UNTRUSTED, config->gw_interface); /* Added by TianyuanPan */
     iptables_do_command("-t mangle -I PREROUTING 1 -i %s -j " CHAIN_TRUSTED, config->gw_interface);     //this rule will be inserted before the prior one
     if (got_authdown_ruleset)
         iptables_do_command("-t mangle -I PREROUTING 1 -i %s -j " CHAIN_AUTH_IS_DOWN, config->gw_interface);    //this rule must be last in the chain
@@ -317,7 +317,7 @@ iptables_fw_init(void)
                          FW_MARK_KNOWN);
 
     /** Untrusted MAC.
-     *  Added by GaomingPan
+     *  Added by TianyuanPan
      *   1、阻止MAC地址为XX:XX:XX:XX:XX:XX主机的所有通信：
      *   iptables -A INPUT -m mac --mac-source XX:XX:XX:XX:XX:XX -j DROP
      *

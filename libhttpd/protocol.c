@@ -431,7 +431,27 @@ int createFlag;
     strncpy(buffer, dir, HTTP_MAX_URL);
     buffer[HTTP_MAX_URL - 1] = 0;
     curItem = server->content;
-    curDir = strtok(buffer, "/");
+
+    //curDir = strtok(buffer, "/");
+    /*************** START HERE *******************/
+    int buf_len = strlen(buffer);
+    int cur_len,
+        all_cur_len = 0,
+        null_c = 0;
+    char *ptr = NULL;
+
+    if (!buf_len)
+    	curDir = NULL;
+    else{
+    	ptr = buffer;
+    	while (strsep(&ptr, "/"))
+    		null_c++;
+    	curDir = buffer;
+    	cur_len = strlen(curDir);
+    	all_cur_len = cur_len;
+    }
+    /*************** END HERE *******************/
+
     while (curDir) {
         curChild = curItem->children;
         while (curChild) {
@@ -451,7 +471,18 @@ int createFlag;
             }
         }
         curItem = curChild;
-        curDir = strtok(NULL, "/");
+        //curDir = strtok(NULL, "/");
+        /*************** START HERE *******************/
+        if ((all_cur_len + null_c )  < buf_len){
+              curDir += cur_len;
+              while(*curDir == 0)
+     	             ++curDir;
+
+     	      cur_len = strlen(curDir);
+              all_cur_len += cur_len;
+         }else
+          curDir = NULL;
+        /*************** END **************************/
     }
     return (curItem);
 }
